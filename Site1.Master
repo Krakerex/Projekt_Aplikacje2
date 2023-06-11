@@ -1,0 +1,74 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="Projekt_Aplikacje2.Site1" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title>Księgarnia</title>
+    <style>
+        /* Style dla banneru */
+        .banner {
+            text-align: center;
+            padding: 10px;
+            background-color: #f2f2f2;
+        }
+
+        /* Style dla menu */
+        .menu {
+            background-color: #333;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .menu a {
+            float: left;
+            color: #fff;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        /* Style dla sidebarów */
+        .sidebar {
+            width: 25%;
+            float: left;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        /* Style dla stopki */
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f2f2f2;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <form runat="server">
+        <div class="banner">
+            <h1>Księgarnia</h1>
+        </div>
+
+        <div class="menu">
+            <a href="Default.aspx">Strona główna</a>
+            <a href="#">Książki</a>
+            <a href="#">Koszyk</a>
+            <a href="#">Konto</a>
+        </div>
+
+       
+
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            <!-- Treść główna strony -->
+        </asp:ContentPlaceHolder>
+
+
+
+        <div class="footer">
+            &copy; 2023 Księgarnia. Wszelkie prawa zastrzeżone.
+        </div>
+    </form>
+</body>
+</html>
