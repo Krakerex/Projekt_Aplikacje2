@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -33,61 +34,94 @@ namespace Projekt_Aplikacje2
                     // Sprawdź typ książki i dodaj odpowiednie przyciski
                     int bookType = Convert.ToInt32(row["TypProduktuID"]);
 
-                    switch (bookType)
-                    {
-                        case 1:
-                            AddToCartPlaceHolder.Controls.Add(new Button { Text = "Dodaj książkę do koszyka", CssClass = "add-to-cart-button" });
-                            AddOtherTypeButtons(2, "Dodaj audiobook do koszyka");
-                            AddOtherTypeButtons(3, "Dodaj ebook do koszyka");
-                            break;
-                        case 2:
-                            AddToCartPlaceHolder.Controls.Add(new Button { Text = "Dodaj audiobook do koszyka", CssClass = "add-to-cart-button" });
-                            AddOtherTypeButtons(1, "Dodaj książkę do koszyka");
-                            AddOtherTypeButtons(3, "Dodaj ebook do koszyka");
-                            break;
-                        case 3:
-                            AddToCartPlaceHolder.Controls.Add(new Button { Text = "Dodaj ebook do koszyka", CssClass = "add-to-cart-button" });
-                            AddOtherTypeButtons(1, "Dodaj książkę do koszyka");
-                            AddOtherTypeButtons(2, "Dodaj audiobook do koszyka");
-                            break;
-                        default:
-                            // Brak obsługi dla innych typów książek
-                            break;
-                    }
+
                 }
+
             }
         }
 
-        private void AddOtherTypeButtons(int type, string buttonText)
+        protected bool CheckProductExists(int type)
         {
-            // Sprawdź, czy istnieje inny typ książki o tym samym tytule
-            SqlDataSource1.SelectCommand = "SELECT Tytul, Autor, Opis, Cena FROM Ksiazki WHERE Tytul = @Title AND TypProduktuID = @TypProduktuID";
-            SqlDataSource1.SelectParameters.Clear();
-            SqlDataSource1.SelectParameters.Add("Title", TitleLabel.Text);
-            SqlDataSource1.SelectParameters.Add("TypProduktuID", type.ToString());
+            string title = Request.QueryString["title"]; // Get the value of the "title" parameter from the URL
+            string connectionString = SqlDataSource1.ConnectionString;
 
-            DataView dv = (DataView)SqlDataSource1.Select(DataSourceSelectArguments.Empty);
-
-            if (dv != null && dv.Count > 0)
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // Dodaj przycisk dla danego typu książki
-                if(dv != null && dv.Count > 0)
-{
-                    foreach (DataRowView rowView in dv)
-                    {
-                        Button button = new Button
-                        {
-                            Text = buttonText,
-                            CssClass = "add-to-cart-button"
-                        };
+                connection.Open();
 
-                        // Dodaj guzik wraz z kontenerem
-                        Panel buttonContainer = new Panel();
-                        buttonContainer.Controls.Add(button);
-                        AddToCartPlaceHolder.Controls.Add(buttonContainer);
-                    }
+                string query = "SELECT COUNT(*) FROM Ksiazki WHERE Tytul = @Title AND TypProduktuID = @Type";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Title", title);
+                command.Parameters.AddWithValue("@Type", type);
+
+                int count = (int)command.ExecuteScalar();
+                return count > 0;
+            }
+        }
+
+        protected void AddBookToCart_Click(object sender, EventArgs e)
+        {
+            Button addButton = (Button)sender; // Get the button control that raised the event
+            int bookType = Convert.ToInt32(addButton.CommandArgument); // Get the book type from the button's command argument
+
+            string bookTitle = Request.QueryString["title"]; // Get the value of the "title" parameter from the URL
+            int userId = GetUserIdFromCookie(); // Implement this method to retrieve the user ID from the cookie
+            int bookId = GetBookIdByTitleAndType(bookTitle, bookType); // Implement this method to retrieve the book ID based on the title and type
+            int quantity = 1; // You can modify this value to set the desired quantity
+
+            string connectionString = SqlDataSource1.ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string insertCommand = "DodajDoKoszyka";
+                SqlCommand command = new SqlCommand(insertCommand, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@KlientID", userId);
+                command.Parameters.AddWithValue("@KsiazkaID", bookId);
+                command.Parameters.AddWithValue("@Ilosc", quantity);
+
+                command.ExecuteNonQuery();
+            }
+        }
+        private int GetUserIdFromCookie()
+        {
+            if (Request.Cookies["UserID"] != null && int.TryParse(Request.Cookies["UserID"].Value, out int userId))
+            {
+                return userId;
+            }
+
+            // Return a default value or handle the case when the user ID is not found in the cookie
+            return 0;
+        }
+        private int GetBookIdByTitleAndType(string title, int type)
+        {
+            string connectionString = SqlDataSource1.ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT KsiazkaID FROM Ksiazki WHERE Tytul = @Title AND TypProduktuID = @Type";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Title", title);
+                command.Parameters.AddWithValue("@Type", type);
+
+                object result = command.ExecuteScalar();
+                if (result != null)
+                {
+                    return Convert.ToInt32(result);
                 }
+
+                // Return a default value or handle the case when the book ID is not found
+                return 0;
             }
         }
     }
+
+    
+
+
 }
+

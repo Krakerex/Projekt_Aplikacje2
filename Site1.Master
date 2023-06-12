@@ -54,17 +54,22 @@
         <div class="menu">
             <a href="Default.aspx">Strona główna</a>
             <a href="#">Książki</a>
-            <a href="#">Koszyk</a>
-            <a href="#">Konto</a>
+             <% if (IsUserLoggedIn()) { %>
+                <a href="Koszyk.aspx">Koszyk</a>
+            <% } %>
+            <% if (IsUserLoggedIn()) { %>
+                <a href="Konto.aspx">Konto</a>
+            <% } else { %>
+                <a href="Logowanie.aspx">Zaloguj się</a>
+            <% } %>
+            <% if (IsUserLoggedIn()) { %>
+            <a href="Logowanie.aspx" runat="server" OnServerClick="LogoutButton_Click">Wyloguj się</a>
+<% } %>
         </div>
-
-       
 
         <asp:ContentPlaceHolder ID="MainContent" runat="server">
             <!-- Treść główna strony -->
         </asp:ContentPlaceHolder>
-
-
 
         <div class="footer">
             &copy; 2023 Księgarnia. Wszelkie prawa zastrzeżone.

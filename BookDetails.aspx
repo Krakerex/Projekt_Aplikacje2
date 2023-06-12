@@ -9,6 +9,14 @@
             <asp:QueryStringParameter Name="Title" QueryStringField="title" />
         </SelectParameters>
     </asp:SqlDataSource>
+    <asp:SqlDataSource ID="AddToCartDataSource" runat="server" ConnectionString="<%$ ConnectionStrings:KsiegarniaConnectionString1 %>"
+    InsertCommand="DodajDoKoszyka" InsertCommandType="StoredProcedure">
+    <InsertParameters>
+        <asp:CookieParameter CookieName="UserID" Name="KlientID" Type="Int32" />
+        <asp:Parameter Name="KsiazkaID" Type="Int32" />
+        <asp:Parameter Name="Ilosc" Type="Int32" DefaultValue="1" />
+    </InsertParameters>
+</asp:SqlDataSource>
 
     <div class="book-details">
         <div class="book-image">
@@ -27,7 +35,17 @@
             <div class="book-price">
                 Cena: <asp:Label ID="PriceLabel" runat="server" Text='<%# Eval("Cena", "{0:C}") %>'></asp:Label>
             </div>
-            <asp:PlaceHolder ID="AddToCartPlaceHolder" runat="server"></asp:PlaceHolder>
+            <% if (CheckProductExists(3)) { %>
+    <asp:Button ID="BookButton" runat="server" Text="Add Book to Cart" OnClick="AddBookToCart_Click" CommandArgument="3"/>
+<% } %>
+
+<% if (CheckProductExists(1)) { %>
+    <asp:Button ID="AudiobookButton" runat="server" Text="Add Audiobook to Cart" OnClick="AddBookToCart_Click" CommandArgument="1"/>
+<% } %>
+
+<% if (CheckProductExists(2)) { %>
+    <asp:Button ID="EbookButton" runat="server" Text="Add Ebook to Cart" OnClick="AddBookToCart_Click" CommandArgument="2"/>
+<% } %>
         </div>
     </div>
 </asp:Content>

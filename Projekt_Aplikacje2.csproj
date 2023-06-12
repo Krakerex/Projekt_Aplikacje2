@@ -74,6 +74,9 @@
     <Content Include="Default.aspx" />
     <Content Include="styles\bookdetails.css" />
     <Content Include="Web.config" />
+    <Content Include="Logowanie.aspx" />
+    <Content Include="Koszyk.aspx" />
+    <Content Include="Konto.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BookDetails.aspx.cs">
@@ -97,6 +100,27 @@
     </Compile>
     <Compile Include="Site1.Master.designer.cs">
       <DependentUpon>Site1.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Logowanie.aspx.cs">
+      <DependentUpon>Logowanie.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logowanie.aspx.designer.cs">
+      <DependentUpon>Logowanie.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Koszyk.aspx.cs">
+      <DependentUpon>Koszyk.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Koszyk.aspx.designer.cs">
+      <DependentUpon>Koszyk.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Konto.aspx.cs">
+      <DependentUpon>Konto.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Konto.aspx.designer.cs">
+      <DependentUpon>Konto.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
