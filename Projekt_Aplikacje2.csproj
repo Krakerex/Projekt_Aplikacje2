@@ -72,11 +72,13 @@
   <ItemGroup>
     <Content Include="BookDetails.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="Ksiazki.aspx" />
     <Content Include="styles\bookdetails.css" />
     <Content Include="Web.config" />
     <Content Include="Logowanie.aspx" />
     <Content Include="Koszyk.aspx" />
     <Content Include="Konto.aspx" />
+    <Content Include="Zarzadzanie.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BookDetails.aspx.cs">
@@ -92,6 +94,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Ksiazki.aspx.cs">
+      <DependentUpon>Ksiazki.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Ksiazki.aspx.designer.cs">
+      <DependentUpon>Ksiazki.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site1.Master.cs">
@@ -121,6 +130,13 @@
     </Compile>
     <Compile Include="Konto.aspx.designer.cs">
       <DependentUpon>Konto.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Zarzadzanie.aspx.cs">
+      <DependentUpon>Zarzadzanie.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Zarzadzanie.aspx.designer.cs">
+      <DependentUpon>Zarzadzanie.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

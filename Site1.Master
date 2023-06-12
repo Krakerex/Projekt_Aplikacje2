@@ -53,7 +53,7 @@
 
         <div class="menu">
             <a href="Default.aspx">Strona główna</a>
-            <a href="#">Książki</a>
+            <a href="Ksiazki.aspx">Książki</a>
              <% if (IsUserLoggedIn()) { %>
                 <a href="Koszyk.aspx">Koszyk</a>
             <% } %>
@@ -62,9 +62,12 @@
             <% } else { %>
                 <a href="Logowanie.aspx">Zaloguj się</a>
             <% } %>
+            <% if (IsUserAdmin()) { %>
+            <a href="Zarzadzanie.aspx" runat="server">Zarzadzanie</a>
+            <% } %>
             <% if (IsUserLoggedIn()) { %>
             <a href="Logowanie.aspx" runat="server" OnServerClick="LogoutButton_Click">Wyloguj się</a>
-<% } %>
+            <% } %>
         </div>
 
         <asp:ContentPlaceHolder ID="MainContent" runat="server">

@@ -25,8 +25,9 @@ namespace Projekt_Aplikacje2
 
             if (dv != null && dv.Count > 0 && password == "admin")
             {
-                // Pobierz identyfikator użytkownika z bazy danych (zakładając, że jest w kolumnie o nazwie "UserID")
+                // Pobierz dane klienta
                 int userID = Convert.ToInt32(dv[0]["KlientID"]);
+                bool isAdmin = Convert.ToBoolean(dv[0]["isAdmin"]);
 
                 // Ustaw flagę zalogowania w sesji
                 Session["LoggedIn"] = true;
@@ -38,6 +39,10 @@ namespace Projekt_Aplikacje2
                 // Utwórz ciasteczko "UserID" i ustaw jego wartość na identyfikator użytkownika
                 HttpCookie userIDCookie = new HttpCookie("UserID", userID.ToString());
                 Response.Cookies.Add(userIDCookie);
+
+                // Utwórz ciasteczko "isAdmin" i ustaw jego wartość na 0 lub 1 w zależności od wartości pola isAdmin
+                HttpCookie isAdminCookie = new HttpCookie("isAdmin", isAdmin ? "1" : "0");
+                Response.Cookies.Add(isAdminCookie);
 
                 // Przekieruj do strony domyślnej po zalogowaniu
                 Response.Redirect("Default.aspx");
